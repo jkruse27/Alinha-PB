@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>Conversor Grafema-Fonema</title>
+		<link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/style.css') }}">
+	</head>
+	<body>
+	<ul>
+		<li><a href="{{ url_for('align') }}">Alinhador HTK</a></li>
+		<li><a href="{{ url_for('kaldi') }}">Alinhador Kaldi</a></li>
+		<li><a href="{{ url_for('index') }}">Conversor</a></li>
+		<li><a href="{{ url_for('ex') }}">Gerenciar Exceções</a></li>
+		<li><a href="{{ url_for('how') }}">Como Usar</a></li>
+		<li><a href="{{ url_for('meta') }}">Metadados</a></li>
+		<li><a href="{{ url_for('about') }}">Sobre</a></li>
+	</ul> 
+		<h1 align="center">Conversor Grafema-Fonema</h1>
+	<form action="{{ url_for('submit') }}" method="post">
+		<div class="box">
+			<div id="grapheme_box" class="division">
+				<p align="center">Grafemas</p>
+				    <textarea name="text" cols="90" rows="15" class="box" placeholder="Escreva os grafemas aqui."></textarea>
+        			<button type="submit" value="add" name="button">Converter</button>
+			</div>
+			<div id="phoneme_box" class="division">
+				<p align="center">Fonemas</p>
+				<textarea name="phoneme" cols="90" rows="15" class="box" placeholder="Os fonemas aparecerão aqui.">{{convertion}}</textarea>
+			</div>
+		</div>
+	</form>
+	</body>
+</html>

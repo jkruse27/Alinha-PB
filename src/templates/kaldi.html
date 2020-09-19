@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+
+<html>
+	<head>
+		<link rel="shortcut icon" href="#" />
+		<meta charset="UTF-8">
+		<title>Alinhador</title>
+		<link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/style.css') }}">
+	</head>
+	<body>
+	<ul>
+		<li><a href="{{ url_for('align') }}">Alinhador HTK</a></li>
+		<li><a href="{{ url_for('kaldi') }}">Alinhador Kaldi</a></li>
+		<li><a href="{{ url_for('index') }}">Conversor</a></li>
+		<li><a href="{{ url_for('ex') }}">Gerenciar Exceções</a></li>
+		<li><a href="{{ url_for('how') }}">Como Usar</a></li>
+		<li><a href="{{ url_for('meta') }}">Metadados</a></li>
+		<li><a href="{{ url_for('about') }}">Sobre</a></li>
+	</ul> 
+		<h1 align="center">Alinhador Kaldi</h1>
+		<form action = "/uploader_kaldi" method = "POST" enctype = "multipart/form-data">
+			<div align="center" class="boxes">
+				<div class="ccc">	
+					<p>Áudio</p>
+					<input type = "file" name = "file" />
+				</div>
+				
+				<div class="ccc">
+					<p>Modelo (.zip)(opcional)</p>	
+					<input type = "file" name = "model" />
+				</div>
+				<div class="ddd">
+					<p>Configurações (.yaml)(opcional)</p>	
+					<input type = "file" name = "config" />
+				</div>
+				<div id="grapheme_box" class="division">
+					<p align="center">Texto</p>
+					<textarea name="text" cols="90" rows="15" class="box" placeholder="Escreva o texto aqui." align="center"></textarea>
+				</div>
+			</div>
+			<div align="center">
+				<label for="in">Formato da entrada:</label>
+				<select name="in" id="in_opt">
+					<option value="graf">Grafemas</option>
+					<option value="sil">Fonemas</option>
+				</select>
+				<label for="option">Unidade da Divisão:</label>
+				<select name="options" id="al_opt">
+					<option value="fonema">Fonemas</option>
+					<option value="silaba">Sílabas Fonéticas</option>
+					<option value="palavra">Palavras</option>
+					<option value="todos">Todos</option>
+				</select>
+			</div>
+			<input float="center" class="tas" type = "submit" value="Alinhar"/>
+		</form> 
+	</body>
+</html>

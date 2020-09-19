@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>Sobre</title>
+		<link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/style.css') }}">
+	</head>
+	<body>
+	<ul>
+		<li><a href="{{ url_for('align') }}">Alinhador HTK</a></li>
+		<li><a href="{{ url_for('kaldi') }}">Alinhador Kaldi</a></li>
+		<li><a href="{{ url_for('index') }}">Conversor</a></li>
+		<li><a href="{{ url_for('ex') }}">Gerenciar Exceções</a></li>
+		<li><a href="{{ url_for('how') }}">Como Usar</a></li>
+		<li><a href="{{ url_for('meta') }}">Metadados</a></li>
+		<li><a href="{{ url_for('about') }}">Sobre</a></li>
+	</ul> 
+		<h1 align="center">Conversor Grafema-Fonema e Alinhador de Sílabas Fonéticas</h1>
+		<h3>João Gabriel Segato Kruse</h3>
+		<p>Projeto de um software de conversão grafema-fonema e alinhamento fonético para português brasileiro 
+		desenvolvudo para Iniciação Científica durante o período de 8/2019 a 8/2020 no IEL/UNICAMP com a orientação do
+		Professor Plinio Almeida Barbosa</p>
+	</body>
+</html>

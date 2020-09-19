@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>Como Usar</title>
+		<link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/style.css') }}">
+	</head>
+	<body>
+	<ul>
+		<li><a href="{{ url_for('align') }}">Alinhador HTK</a></li>
+		<li><a href="{{ url_for('kaldi') }}">Alinhador Kaldi</a></li>
+		<li><a href="{{ url_for('index') }}">Conversor</a></li>
+		<li><a href="{{ url_for('ex') }}">Gerenciar Exceções</a></li>
+		<li><a href="{{ url_for('how') }}">Como Usar</a></li>
+		<li><a href="{{ url_for('meta') }}">Metadados</a></li>
+		<li><a href="{{ url_for('about') }}">Sobre</a></li>
+	</ul> 
+		<h1 align="center">Como Usar</h1>
+		<h2>Conversor</h2>
+			<p>Para utilizar o conversor, basta digitar o texto a ser convertido na caixa de texto à esquerda. 
+			O texto convertido aparecerá na caixa a direita. </p>
+			<p>Observações:</p>
+			<p>Numerais não são convertidos. Além disso, pontuações e outros sinais são desconsiderados na conversão.</p>
+			<p>A correspondência utilizada é apresentada nos metadados.</p>
+		<h2>Alinhador HTK</h2>
+		<p>Para utilizar o alinhador, é necessário escolher o arquivo de áudio clicando no botão designado (somente são aceitos arquivos .wav) e escrever o texto
+		correspondente na caixa de texto. Você pode escolher entre fornecer o texto em grafemas (de modo que o conversor automático o converterá para fonemas) ou 
+		diretamente em fonemas (desde que a conversão utilizada siga o mesmo padrão apresentado na aba de metadados). Por fim, basta escolher qual a forma de alinhamento desejada:
+		fonemas (alinha cada fonema individualmente), sílabas fonéticas (alinha por sílabas fonéticas), palavras (alinha por palavra) ou todos (retorna todos os alinhamentos anteriores)
+		e clicar em Alinhar. Com isso, o site disponibilizará o arquivo TextGrid com o alinhamento para Download<p>
+		<p>!Atenção! 'sp' é usado para representar pausas curtas no alinhador, e é retirado do TextGrid final.</p>
+		<p>!Atenção! Quando fazendo o alinhamento com a opção 'todos' forneça o texto em grafemas ou fonemas mas dividido em palavras (não fornecer o texto separado em sílabas nesse caso)</p>
+		<h2>Alinhador Kaldi</h2>
+		<p>O alinhador Kaldi funciona de forma muito semelhante ao HTK. No alinhador Kaldi, um Modelo treinado pode ser fornecido, porém não é obrigatório. Caso o modelo tenha sido treinado com 			configurações não padrão o arquivo .yaml
+		de configurações para o alihamento deve ser fornecido também</p>
+		<h2>Gerenciando Exceções</h2>
+		<p>O alinhamento usa entre outras coisas um dicionário de exceções, de modo que, caso você encontre alguma conversão incorreta, pode adicioná-la no dicionário.</p>
+		<p>Para fazer isso, basta ir na aba Gerenciar Exceções. Nela é possível visualizar as exceções já presentes e adicionar novas. Para adicionar uma exceção, basta digitar a
+		palavra na caixa de texto à esquerda e a sua conversão na caixa de texto à direita. Para remover uma exceção, basta digitar a palavra na caixa de texto à esquerda e deixar a 
+		caixa de texto à direita em branco. Caso deseje adicionar ou remover múltiplas exceções de uma vez, pode escrever as palavras separando-as por espaço na caixa a esquerda e
+		suas conversões separadas por espaços na caixa da direita (a ordem das palavras e exceções deve ser a mesma em ambas as caixas) e caso esteja removendo, apenas escreva as 
+		palavras a serem removidas separadas por espaços.</p>
+		<h2>Observações:</h2>
+		<p>No momento, para casos com áudios e textos muito compridos o site pode dar um 'Aplication Error', devido ao tempo de computação</p>
+	</body>
+</html>
