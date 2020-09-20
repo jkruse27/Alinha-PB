@@ -23,11 +23,11 @@ Com exceção dos códigos do HTKToolskit, o site todo é feito em Python, porta
 
 ### Linux
 
-Com as dependências já instaladas, para começar o site basta abrir um terminal, ir até a pasta na qual se encontra o executável 'server' e executá-lo (`./server`). Isso iniciará o servidor, de modo que agora é possível abrir o site em um navegador de sua escolha indo ao link 127.0.0.1:5000 (link aparecerá no terminal também assim que o servidor iniciar). É importante ressaltar que o terminal precisa ficar aberto e executando o servidor enquanto o site estiver sendo utilizado.
+Com as dependências já instaladas, para começar o site basta abrir um terminal, ir até a pasta na qual se encontra o executável 'server' e executá-lo (`./server`). Isso iniciará o servidor (pode demorar alguns segundos), de modo que agora é possível abrir o site em um navegador de sua escolha indo ao link 127.0.0.1:5000 (link aparecerá no terminal também assim que o servidor iniciar). É importante ressaltar que o terminal precisa ficar aberto e executando o servidor enquanto o site estiver sendo utilizado.
 
 ### Windows
 
-A execução para Windows funciona de forma muito semelhante que a para Linux, mas ao invés de precisar abrir no terminal, basta executar o arquivo server.exe e entrar no site pelo navegador de sua escolha através do link 127.0.0.1:5000 (link aparecerá no aplicativo também assim que o servidor iniciar).
+A execução para Windows funciona de forma muito semelhante que a para Linux, mas ao invés de precisar abrir no terminal, basta executar o arquivo server.exe, que abrirá um terminal no qual o servidor rodará (pode demorar alguns segundos). A partir daí é só entrar no site pelo navegador de sua escolha através do link 127.0.0.1:5000 (link aparecerá no aplicativo também assim que o servidor iniciar).
 
 
 
