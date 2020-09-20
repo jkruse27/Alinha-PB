@@ -3,9 +3,9 @@
 Alinha-PB foi desenvolvido para facilitar a conversão em fonemas de frases e o alinhamento fonético forçado, e para o treinamento e alinhamento dos modelos foram usados: HTKToolkit, Kaldi, Prosodylab-Aligner e Montreal Forced Aligner
 
 Esse repositório contém modelos treinados para:
-	- HTK (treinado diretamente com HTKToolkit)
-	- ProsodyLab_Aligner (treinado usando o prosodylab aligner)
-	- Montreal_Forced_Aligner (treinado usando o montreal forced aligner)
+- HTK (treinado diretamente com HTKToolkit)
+- ProsodyLab_Aligner (treinado usando o prosodylab aligner)
+- Montreal_Forced_Aligner (treinado usando o montreal forced aligner)
 
 na pasta Models, além do código fonte do site de conversão e alinhamento na pasta src.
 
@@ -13,7 +13,7 @@ Todos os modelos foram treinados usando a representação em ASCII dos fonemas.
 
 ## Rodando o site localmente
 
-Para instalar o site e executá-lo localmente (recomendado especialmente quando lidando com alinhamentos de áudios longos), basta instalar a versão para o sistema operacional desejado nos Releases e seguir os passos abaixo. O site roda em um servidor em Flask, logo enquanto o servidor roda no terminal o site é acessado pelo navegador.
+Para instalar o site e executá-lo localmente (recomendado especialmente quando lidando com alinhamentos de áudios longos), basta instalar a versão para o sistema operacional desejado nos Releases, extraí-la e seguir os passos abaixo. O site roda em um servidor em Flask, logo enquanto o servidor roda no terminal o site é acessado pelo navegador.
 
 Com exceção dos códigos do HTKToolskit, o site todo é feito em Python, portanto é necessário certificar-se de que você possui uma versão posterior a 3.6 de Python instalada na sua máquina. Para instalar as dependências necessárias, basta executar o comando 
 
