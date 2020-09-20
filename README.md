@@ -33,4 +33,4 @@ A execução para Windows funciona de forma muito semelhante que a para Linux, m
 
 
 
-Os executáveis foram testados apenas para Ubuntu 16.04 e Windows 10
+Os executáveis foram testados apenas para Ubuntu 16.04 e Windows 10 usando Python3.7
