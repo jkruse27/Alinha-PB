@@ -4,7 +4,6 @@ jsonpath-rw==1.4.0
 jsonschema==2.6.0
 numpy==1.17.3
 pyparsing==2.4.0
-pyscf==1.6.1
 PySocks==1.6.8
 update==0.0.1
 urllib3==1.24.1
