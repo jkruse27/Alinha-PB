@@ -28,3 +28,9 @@ Com as dependências já instaladas, para começar o site basta abrir um termina
 ### Windows
 
 A execução para Windows funciona de forma muito semelhante que a para Linux, mas ao invés de precisar abrir no terminal, basta executar o arquivo server.exe e entrar no site pelo navegador de sua escolha através do link 127.0.0.1:5000 (link aparecerá no aplicativo também assim que o servidor iniciar).
+
+
+
+
+
+Os executáveis foram testados apenas para Ubuntu 16.04 e Windows 10
