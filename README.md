@@ -17,13 +17,13 @@ Para instalar o site e executá-lo localmente (recomendado especialmente quando 
 
 Com exceção dos códigos do HTKToolskit, o site todo é feito em Python, portanto é necessário certificar-se de que você possui uma versão posterior a 3.6 de Python instalada na sua máquina. Para instalar as dependências necessárias, basta executar o comando 
 
-inline code- `pip install -r requirements.txt`
+`pip install -r requirements.txt`
 
 **!!Atenção!!** Para o uso no Windows, a instalação do Python realizada pela Microsoft Store as vezes resulta em problemas na execução, portanto é importante instalá-lo a partir dos executáveis do site oficial ([https://www.python.org/]).
 
 ### Linux
 
-Com as dependências já instaladas, para começar o site basta abrir um terminal, ir até a pasta na qual se encontra o executável 'server' e executá-lo (inline code- `./server`). Isso iniciará o servidor, de modo que agora é possível abrir o site em um navegador de sua escolha indo ao link 127.0.0.1:5000 (link aparecerá no terminal também assim que o servidor iniciar). É importante ressaltar que o terminal precisa ficar aberto e executando o servidor enquanto o site estiver sendo utilizado.
+Com as dependências já instaladas, para começar o site basta abrir um terminal, ir até a pasta na qual se encontra o executável 'server' e executá-lo (`./server`). Isso iniciará o servidor, de modo que agora é possível abrir o site em um navegador de sua escolha indo ao link 127.0.0.1:5000 (link aparecerá no terminal também assim que o servidor iniciar). É importante ressaltar que o terminal precisa ficar aberto e executando o servidor enquanto o site estiver sendo utilizado.
 
 ### Windows
 
