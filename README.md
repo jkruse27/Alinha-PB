@@ -19,6 +19,8 @@ Com exceção dos códigos do HTKToolskit, o site todo é feito em Python, porta
 
 `pip install -r requirements.txt`
 
+**!!Atenção!!** Tanto para windows quanto para linux é importante manter o executável em uma pasta própria e contendo somente ele.
+
 **!!Atenção!!** Para o uso no Windows, a instalação do Python realizada pela Microsoft Store as vezes resulta em problemas na execução, portanto é importante instalá-lo a partir dos executáveis do site oficial ([https://www.python.org/]).
 
 ### Linux
