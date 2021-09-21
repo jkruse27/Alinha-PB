@@ -145,27 +145,33 @@ class TextConverter():
 
 		if(aligner == 'HTK'):
 			if('win' not in sys.platform.lower()):
-				subprocess.run([os.path.join(base_dir,"htk/bin.cpu/HCopy"), "-C", os.path.join(base_dir,"lib/config.parming"), "-S", "audios.scp"])
+				#subprocess.run([os.path.join(base_dir,"htk/bin.cpu/HCopy"), "-C", os.path.join(base_dir,"lib/config.parming"), "-S", "audios.scp"])
+				subprocess.run(["HCopy", "-C", os.path.join(base_dir,"lib/config.parming"), "-S", "audios.scp"])
 				if(hmmdefs):
-					subprocess.run([os.path.join(base_dir,"htk/bin.cpu/HVite"), "-a", "-C", 
+					#subprocess.run([os.path.join(base_dir,"htk/bin.cpu/HVite"), "-a", "-C", 
+					subprocess.run(["HVite", "-a", "-C", 
 							os.path.join(base_dir,"lib/config"), "-H", os.path.join(base_dir,"models/hmm/hmmdefs"), 
 							"-I", "mlf.mlf", "-S", "mfc.matl", "-i",
 							"recog.out", "dict", "hmm_names"])
 				else:
-					subprocess.run([os.path.join(base_dir,"htk/bin.cpu/HVite"), "-a", "-C", \
+					#subprocess.run([os.path.join(base_dir,"htk/bin.cpu/HVite"), "-a", "-C", \
+					subprocess.run(["HVite", "-a", "-C", \
 							os.path.join(base_dir,"lib/config"), "-H", os.path.join(base_dir,"models/hmm/hmmdefs"), \
 							"-I", "mlf.mlf", "-S", "mfc.matl", "-i", \
 							"recog.out", "dict", os.path.join(base_dir,"lib/hmm_names")])
 			else:
-				os.system(" ".join([os.path.join(base_dir,"htk\\bin.win32\\HCopy.exe"), "-C", os.path.join(base_dir,"lib\\config.parming"), "-S", "audios.scp"]))
+				#os.system(" ".join([os.path.join(base_dir,"htk\\bin.win32\\HCopy.exe"), "-C", os.path.join(base_dir,"lib\\config.parming"), "-S", "audios.scp"]))
+				os.system(" ".join(["HCopy.exe", "-C", os.path.join(base_dir,"lib\\config.parming"), "-S", "audios.scp"]))
 				#subprocess.run([os.path.join(base_dir,"htk\\bin.win32\\HCopy.exe"), "-C", os.path.join(base_dir,"lib\\config.parming"), "-S", "audios.scp"])
 				if(hmmdefs):	
-					subprocess.run([os.path.join(base_dir,"htk\\bin.win32\\HVite.exe"), "-a", "-C", \
+					#subprocess.run([os.path.join(base_dir,"htk\\bin.win32\\HVite.exe"), "-a", "-C", \
+					subprocess.run(["HVite.exe", "-a", "-C", \
 							os.path.join(base_dir,"lib\\config"), "-H", os.path.join(base_dir,"models\\hmm\\hmmdefs"),\
 							"-I", "mlf.mlf", "-S", "mfc.matl", "-i", \
 							"recog.out", "dict", "hmm_names"])
 				else:
-					subprocess.run([os.path.join(base_dir,"htk\\bin.win32\\HVite.exe"), "-a", "-C", \
+					#subprocess.run([os.path.join(base_dir,"htk\\bin.win32\\HVite.exe"), "-a", "-C", \
+					subprocess.run(["HVite.exe", "-a", "-C", \
 							os.path.join(base_dir,"lib\\config"), "-H", os.path.join(base_dir,"models\\hmm\\hmmdefs"), \
 							"-I", "mlf.mlf", "-S", "mfc.matl", "-i", \
 							"recog.out", "dict", os.path.join(base_dir,"lib\\hmm_names")])

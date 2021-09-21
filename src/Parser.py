@@ -4,11 +4,11 @@ class PhonemeLexer(Lexer):
 	tokens = {MAI,MIN,TON,PAR,S_CONS,CONS,SPACE,END,SIL}
 
 	SIL = r'sil'
-	PAR = r'([aiueoAIUEO],*[IU])|([aiueoAIUEO],*hU)|([ao],*NI)|([aA],*NU)|([UI][IAU])'
+	PAR = r'([aeuo],*I)|([aieo],*U)|([eo],*hU)|([ao],*NI)|([aA],*NU)|([UI][IAU])'
 	TON = r'([aiueo],[Nh])|([eo],hI)|([aiueo],)'
 	MAI = r'([AIUEO]N)|([AIUEO])'
-	MIN = r'([aiueo]h)|([eo]hI)|([aiueo]N)|([aiueo])'
-	S_CONS = r'^(zh|nh|tS|sh|dZ|lh|[ptksbdgfvzSZmnrNRl])'
+	MIN = r'([eo]h)|([eo]hI)|([aiueo]N)|([aiueo])'
+	S_CONS = r'^(zh|nh|tS|sh|dZ|lh|[ptksbdgfvzSmnrNRl])'
 	CONS = r'zh|nh|tS|sh|dZ|lh|[ptksbdgfvzSZmnrNRl]'
 	SPACE = r'\ '
 	END = r'<<EOF>>|\n'

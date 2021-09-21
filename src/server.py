@@ -11,6 +11,12 @@ import subprocess
 import wave
 import contextlib
 
+base_dir = '.'
+if hasattr(sys, '_MEIPASS'):
+	base_dir = os.path.join(sys._MEIPASS)
+
+TMP = os.path.join(base_dir,'tmp/')
+
 def clean_tg():
 	if('win' not in sys.platform.lower()):
 		subprocess.run(['rm','-f', '*.TextGrid'])
@@ -38,31 +44,31 @@ def clean():
 	if('win' not in sys.platform.lower()):
 		subprocess.run(['rm',\
 				'-f',\
-				'*.wav',\
-				'a',\
-				'b',\
-				'dict',\
-				'*.mlf',\
-				'*.out',\
-				'*.lab',\
-				'*.scp',\
-				'*.matl',\
-				'*.mfc',\
-				'hmmdefs'])
+				os.path.join(TMP,'*.wav'),\
+				os.path.join(TMP,'a'),\
+				os.path.join(TMP,'b'),\
+				os.path.join(TMP,'dict'),\
+				os.path.join(TMP,'*.mlf'),\
+				os.path.join(TMP,'*.out'),\
+				os.path.join(TMP,'*.lab'),\
+				os.path.join(TMP,'*.scp'),\
+				os.path.join(TMP,'*.matl'),\
+				os.path.join(TMP,'*.mfc'),\
+				os.path.join(TMP,'hmmdefs')])
 		subprocess.run(['rm','-f','-r','output'])
 	else:
 		os.system(" ".join(['del',\
-				'*.wav',\
-				'a',\
-				'b',\
-				'*.mlf',\
-				'dict',\
-				'*.out',\
-				'*.lab',\
-				'*.scp',\
-				'*.matl',\
-				'*.mfc',\
-				'hmmdefs',\
+				os.path.join(TMP,'*.wav'),\
+				os.path.join(TMP,'a'),\
+				os.path.join(TMP,'b'),\
+				os.path.join(TMP,'*.mlf'),\
+				os.path.join(TMP,'dict'),\
+				os.path.join(TMP,'*.out'),\
+				os.path.join(TMP,'*.lab'),\
+				os.path.join(TMP,'*.scp'),\
+				os.path.join(TMP,'*.matl'),\
+				os.path.join(TMP,'*.mfc'),\
+				os.path.join(TMP,'hmmdefs'),\
 				'>NUL 2>&1']))
 		#subprocess.run(['del',\
 		#		'*.wav',\
@@ -80,9 +86,6 @@ def clean():
 		#		stdout=subprocess.DEVNULL,\
 		#		stderr=subprocess.DEVNULL)
 
-base_dir = '.'
-if hasattr(sys, '_MEIPASS'):
-    base_dir = os.path.join(sys._MEIPASS)
 
 app = Flask(__name__,
         static_folder=os.path.join(base_dir, 'static'),
@@ -90,7 +93,7 @@ app = Flask(__name__,
 
 #app = Flask(__name__)
 
-app.config['UPLOAD_FOLDER'] = os.path.join(app.root_path,"tmp")
+app.config['UPLOAD_FOLDER'] = TMP
 app.config['MAX_CONTENT_PATH'] = 1000000000
 
 @app.route('/')
@@ -137,6 +140,7 @@ def upload_file():
 
 			f = request.files['file']
 			filename = f.filename
+			filename = os.path.join(TMP, filename)
 			f.save(filename)
 
 			text=request.form['text']
@@ -144,7 +148,7 @@ def upload_file():
 			hmmdefs = False
 			if (request.files['hmm'].filename != ''):
 				g = request.files['hmm']
-				g.save('hmmdefs')
+				g.save(os.path.join(TMP, "hmmdefs"))
 				hmmdefs = True
 
 			req_in = request.form['in']
@@ -163,68 +167,68 @@ def upload_file():
 			# Formata o arquivo de saida para o formato desejado
 			TextConverter.format_output(text1, filename, req_out, aligner=aligner)
 			clean()
-			return redirect("/download/%s" %(filename))
+			return redirect("/download/%s" %(filename[len(TMP):]))
 
 	except Exception as e:
 		return "Ocorreu um erro!\n" + str(e) + "\n Verifique a página sobre para mais informações sobre possíveis erros\n"
 	
 @app.route('/uploader_kaldi', methods = ['GET', 'POST'])
 def uploader_kaldi():
-#	try:
-	if request.method == 'POST':
-		clean_tg()
-		# Recebendo arquivos
-		f = request.files['file']
-		filename = f.filename
-		f.save(filename)
-			
-		print(filename)
+	try:
+		if request.method == 'POST':
+			clean_tg()
 
-		text=request.form['text']
-			
-		model = False
-		if (request.files['model'].filename != ''):
-			g = request.files['model']
-			g.save('model.zip')
-			model = True
-		config = False
-		if (request.files['config'].filename != ''):
-			g = request.files['config']
-			g.save('config.yaml')
-			config = True
-			
-		if('win' not in sys.platform):
-			subprocess.run(["rm", "-f", "corpus/*"])
-			subprocess.run(["cp", filename, "corpus/train.wav"])
-		else:
-			os.system(" ".join(["del", "/s","/q","corpus\\*", ">NUL 1>&2"]))
-			#subprocess.run(["del", "/s", "/q", "corpus\\*"],stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL)
-			os.system(" ".join(["move", filename, os.path.join(base_dir,"corpus\\train.wav")]))
-			#subprocess.run(["move", filename, os.path.join(base_dir,"corpus\\train.wav")])	
+			# Recebendo arquivos
+			f = request.files['file']
+			filename = f.filename
+			filename = os.path.join(TMP, filename)
+			f.save(filename)
 
-		aligner = 'Kaldi'
-		req_in = request.form['in']
-		req_out = request.form['options']
-
-		# Cria todos os arquivos necessarios para o alinhamento	
-		text1 = TextConverter.perform_conversion(text, 
-						 filename,
-						 req_in,
-						 req_out,
-						 aligner=aligner)
-
-		TextConverter.align(text, filename, req_in, req_out, hmmdefs=model, aligner=aligner,config=config)
+			text=request.form['text']
 			
-		# Formata o arquivo de saida para o formato desejado
-		TextConverter.format_output(text1, filename, req_out, aligner=aligner)
-		clean()
-		return redirect("/download/%s" %(filename))
-#	except Exception as e:
-#		return "Ocorreu um erro!\n" + str(e) + "\n Verifique a página sobre para mais informações sobre possíveis erros\n"
+			model = False
+			if (request.files['model'].filename != ''):
+				g = request.files['model']
+				g.save(os.path.join(TMP,"model.zip"))
+				model = True
+			config = False
+			if (request.files['config'].filename != ''):
+				g = request.files['config']
+				g.save(os.path.join(TMP,"config.yaml"))
+				config = True
+			
+			if('win' not in sys.platform):
+				subprocess.run(["rm", "-f", "corpus/*"])
+				subprocess.run(["cp", filename, "corpus/train.wav"])
+			else:
+				os.system(" ".join(["del", "/s","/q","corpus\\*", ">NUL 1>&2"]))
+				#subprocess.run(["del", "/s", "/q", "corpus\\*"],stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL)
+				os.system(" ".join(["move", filename, os.path.join(base_dir,"corpus\\train.wav")]))
+				#subprocess.run(["move", filename, os.path.join(base_dir,"corpus\\train.wav")])	
+
+			aligner = 'Kaldi'
+			req_in = request.form['in']
+			req_out = request.form['options']
+
+			# Cria todos os arquivos necessarios para o alinhamento	
+			text1 = TextConverter.perform_conversion(text, 
+							 filename,
+							 req_in,
+							 req_out,
+							 aligner=aligner)
+
+			TextConverter.align(text, filename, req_in, req_out, hmmdefs=model, aligner=aligner,config=config)
+			
+			# Formata o arquivo de saida para o formato desejado
+			TextConverter.format_output(text1, filename, req_out, aligner=aligner)
+			clean()
+			return redirect("/download/%s" %(filename[len(TMP):]))
+	except Exception as e:
+		return "Ocorreu um erro!\n" + str(e) + "\n Verifique a página sobre para mais informações sobre possíveis erros\n"
 
 @app.route('/download/<name>', methods=['GET', 'POST'])
 def download(name):
-	path = name.replace("wav", "TextGrid")
+	path = os.path.join(TMP,name.replace("wav", "TextGrid"))
 	return send_file(path, as_attachment=True)
 
 		

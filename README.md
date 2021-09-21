@@ -16,6 +16,7 @@ Todos os modelos foram treinados usando a representação em ASCII dos fonemas.
 Para instalar o site e executá-lo localmente (recomendado especialmente quando lidando com alinhamentos de áudios longos), basta instalar a versão para o sistema operacional desejado nos Releases, extraí-la e seguir os passos abaixo. O site roda em um servidor em Flask, logo enquanto o servidor roda no terminal o site é acessado pelo navegador.
 
 Com exceção dos códigos do HTKToolskit, o site todo é feito em Python, portanto é necessário certificar-se de que você possui uma versão posterior a 3.6 de Python instalada na sua máquina. Para instalar as dependências necessárias, basta executar o comando 
+É necessário ter o HTKToolkit instalado também, o que pode ser feito aqui https://htk.eng.cam.ac.uk/.
 
 `pip install -r requirements.txt`
 
