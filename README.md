@@ -12,7 +12,10 @@ na pasta Models, além do código fonte do site de conversão e alinhamento na p
 Todos os modelos foram treinados usando a representação em ASCII dos fonemas.
 
 ## Rodando o site localmente
+### Método Simples
+A forma mais simples de executar o site localmente é utilizando docker. Para isso, inicialmente é necessário instalar Docker no seu dispositivo, o que pode ser feito seguindo os passos em https://docs.docker.com/engine/install/ para o seu sistema operacional. Feito isso uma imagem já configurada com o programa funcional pode ser obtida usando o comando ``docker pull jkruse27/alinhapb`` ou fazendo o push da imagem do repositório jkruse27/alinhapb no docker hub usando a interface gráfica. Com isso, basta executar usando o comando ``docker run -p 5000:5000 jkruse27/alinhapb`` ou através da interface gráfica (lembre de configurar na sessão de Ports nas configurações adicionais o Local Host como 5000). Com isso, o site já pode ser acessado entrando na url 127.0.0.1:5000  .
 
+### Outro Método
 Para instalar o site e executá-lo localmente (recomendado especialmente quando lidando com alinhamentos de áudios longos), basta instalar a versão para o sistema operacional desejado nos Releases, extraí-la e seguir os passos abaixo. O site roda em um servidor em Flask, logo enquanto o servidor roda no terminal o site é acessado pelo navegador.
 
 Com exceção dos códigos do HTKToolskit, o site todo é feito em Python, portanto é necessário certificar-se de que você possui uma versão posterior a 3.6 de Python instalada na sua máquina. Para instalar as dependências necessárias, basta executar o comando 
