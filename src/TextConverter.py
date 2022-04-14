@@ -5,6 +5,13 @@ import sys
 import re
 import subprocess
 
+
+base_dir = '.'
+if hasattr(sys, '_MEIPASS'):
+	base_dir = os.path.join(sys._MEIPASS)
+
+TMP=os.path.join(base_dir, 'tmp/')
+
 class TextConverter():
 	
 	# Retorna dicionario contendo a conversao das silabas foneticas para fonemas 
@@ -14,10 +21,11 @@ class TextConverter():
 			if(i not in v):
 				v.append(i)
 		lexer = PhonemeLexer()
-	
-		with open("dict", "w") as f:
+
+		with open(os.path.join(TMP,"dict"), "w") as f:
 			for i in sorted(v):
 				f.write("%s %s\n" %(i, re.sub(' +', ' '," ".join(map(lambda x: x.value, lexer.tokenize(i))).replace(",", ""))))
+	
 	
 	# Cria um dicionario a partir do texto
 	def create_dict(self, text):
@@ -25,7 +33,7 @@ class TextConverter():
 	
 	# Cria um arquivo mlf
 	def mlf(self, text, name):
-		with open("mlf.mlf", "w") as f:
+		with open(os.path.join(TMP,"mlf.mlf"), "w") as f:
 			f.write('#!MLF!#\n"*/%s"\n' %name.replace(".wav", ".lab"))
 			for i in text:
 				f.write("%s\n" %i)
@@ -35,15 +43,15 @@ class TextConverter():
 				f.write("%s\n" %i)
 
 	def scp(self, name):
-		with open("audios.scp", "w") as f:
+		with open(os.path.join(TMP,"audios.scp"), "w") as f:
 			f.write("%s %s\n" %(name, name.replace(".wav", ".mfc")))
-		with open("mfc.matl", "w") as f:
+		with open(os.path.join(TMP,"mfc.matl"), "w") as f:
 			f.write("%s\n" %name.replace(".wav", ".mfc"))
 
 	def generate_textgrid(self, name, repl="", mul_text=False):
 		l = repl.split()
 		try:
-			with open("recog.out", "r") as w:
+			with open(os.path.join(TMP,"recog.out"), "r") as w:
 				for i in w:
 					if(i[0]=='"'):
 						with open("%s" %i[1:-2].replace(".rec", ".lab"), "w") as f:
@@ -66,7 +74,7 @@ class TextConverter():
 											new_file.append(" ".join(m))						 
 							f.write('\n'.join(new_file))
 			if(mul_text):
-				self.multi_split(name.replace(".wav", ".lab"), name.replace(".wav", ".TextGrid"), "text1.out", "text2.out")
+				self.multi_split(name.replace(".wav", ".lab"), name.replace(".wav", ".TextGrid"), os.path.join(TMP,"text1.out"), os.path.join(TMP,"text2.out"))
 			else:
 				self.lab_to_textgrid(name.replace(".wav", ".lab"), name.replace(".wav", ".TextGrid"))
 		except:
@@ -100,7 +108,8 @@ class TextConverter():
 						break
 
 			# Converte para silabas foneticas
-			text = re.sub(' +', ' '," ".join(map(lambda x: x.value, lexer.tokenize(" ".join(v)))).replace(",", ""))
+			text = parser.parse(lexer.tokenize(" ".join(v)))
+			#text = re.sub(' +', ' '," ".join(map(lambda x: x.value, lexer.tokenize(" ".join(v)))).replace(",", ""))
 		elif(out_format == 'todos'):
 			v = []
 			# Marca tonicas com ','
@@ -112,10 +121,10 @@ class TextConverter():
 						v.append("".join(tmp))
 						break
 			# Conversao em silabas foneticas eh salva em text1.out
-			with open("text1.out", "w") as f:
+			with open(os.path.join(TMP,"text1.out"), "w") as f:
 				f.write(parser.parse(lexer.tokenize(" ".join(v))))
 			# Conversao em palavras eh salva em text2.out
-			with open("text2.out", "w") as tt:
+			with open(os.path.join(TMP,"text2.out"), "w") as tt:
 				tt.write(text)
 
 			text = re.sub(' +', ' '," ".join(map(lambda x: x.value, lexer.tokenize(text))).replace(",", ""))
@@ -133,7 +142,7 @@ class TextConverter():
 			txt_cnv.mlf(text.split(), filename)
 			txt_cnv.scp(filename)
 		elif(aligner == 'Kaldi'):
-			with open("train.lab", "w") as f:
+			with open(os.path.join(TMP,"train.lab"), "w") as f:
 				f.write(text)
 		return text
 
@@ -145,40 +154,34 @@ class TextConverter():
 
 		if(aligner == 'HTK'):
 			if('win' not in sys.platform.lower()):
-				#subprocess.run([os.path.join(base_dir,"htk/bin.cpu/HCopy"), "-C", os.path.join(base_dir,"lib/config.parming"), "-S", "audios.scp"])
-				subprocess.run(["HCopy", "-C", os.path.join(base_dir,"lib/config.parming"), "-S", "audios.scp"])
+				subprocess.run([os.path.join(base_dir,"htk/bin.cpu/HCopy"), "-C", os.path.join(base_dir,"lib/config.parming"), "-S", os.path.join(TMP,"audios.scp")])
 				if(hmmdefs):
-					#subprocess.run([os.path.join(base_dir,"htk/bin.cpu/HVite"), "-a", "-C", 
-					subprocess.run(["HVite", "-a", "-C", 
+					subprocess.run([os.path.join(base_dir,"htk/bin.cpu/HVite"), "-a", "-C", 
 							os.path.join(base_dir,"lib/config"), "-H", os.path.join(base_dir,"models/hmm/hmmdefs"), 
-							"-I", "mlf.mlf", "-S", "mfc.matl", "-i",
-							"recog.out", "dict", "hmm_names"])
+							"-I", os.path.join(TMP,"mlf.mlf"), "-S", os.path.join(TMP,"mfc.matl"), "-i",
+							os.path.join(TMP,"recog.out"), os.path.join(TMP,"dict"), os.path.join(TMP,"hmm_names")])
 				else:
-					#subprocess.run([os.path.join(base_dir,"htk/bin.cpu/HVite"), "-a", "-C", \
-					subprocess.run(["HVite", "-a", "-C", \
+					subprocess.run([os.path.join(base_dir,"htk/bin.cpu/HVite"), "-a", "-C", \
 							os.path.join(base_dir,"lib/config"), "-H", os.path.join(base_dir,"models/hmm/hmmdefs"), \
-							"-I", "mlf.mlf", "-S", "mfc.matl", "-i", \
-							"recog.out", "dict", os.path.join(base_dir,"lib/hmm_names")])
+							"-I", os.path.join(TMP,"mlf.mlf"), "-S", os.path.join(TMP,"mfc.matl"), "-i", \
+							os.path.join(TMP,"recog.out"), os.path.join(TMP,"dict"), os.path.join(base_dir,"lib/hmm_names")])
 			else:
-				#os.system(" ".join([os.path.join(base_dir,"htk\\bin.win32\\HCopy.exe"), "-C", os.path.join(base_dir,"lib\\config.parming"), "-S", "audios.scp"]))
-				os.system(" ".join(["HCopy.exe", "-C", os.path.join(base_dir,"lib\\config.parming"), "-S", "audios.scp"]))
+				os.system(" ".join([os.path.join(base_dir,"htk\\bin.win32\\HCopy.exe"), "-C", os.path.join(base_dir,"lib\\config.parming"), "-S", os.path.join(TMP,"audios.scp")]))
 				#subprocess.run([os.path.join(base_dir,"htk\\bin.win32\\HCopy.exe"), "-C", os.path.join(base_dir,"lib\\config.parming"), "-S", "audios.scp"])
 				if(hmmdefs):	
-					#subprocess.run([os.path.join(base_dir,"htk\\bin.win32\\HVite.exe"), "-a", "-C", \
-					subprocess.run(["HVite.exe", "-a", "-C", \
+					subprocess.run([os.path.join(base_dir,"htk\\bin.win32\\HVite.exe"), "-a", "-C", \
 							os.path.join(base_dir,"lib\\config"), "-H", os.path.join(base_dir,"models\\hmm\\hmmdefs"),\
-							"-I", "mlf.mlf", "-S", "mfc.matl", "-i", \
-							"recog.out", "dict", "hmm_names"])
+							"-I", os.path.join(TMP,"mlf.mlf"), "-S", os.path.join(TMP,"mfc.matl"), "-i", \
+							os.path.join(TMP,"recog.out"), os.path.join(TMP,"dict"), os.path.join(TMP,"hmm_names")])
 				else:
-					#subprocess.run([os.path.join(base_dir,"htk\\bin.win32\\HVite.exe"), "-a", "-C", \
-					subprocess.run(["HVite.exe", "-a", "-C", \
+					subprocess.run([os.path.join(base_dir,"htk\\bin.win32\\HVite.exe"), "-a", "-C", \
 							os.path.join(base_dir,"lib\\config"), "-H", os.path.join(base_dir,"models\\hmm\\hmmdefs"), \
-							"-I", "mlf.mlf", "-S", "mfc.matl", "-i", \
-							"recog.out", "dict", os.path.join(base_dir,"lib\\hmm_names")])
+							"-I", os.path.join(TMP,"mlf.mlf"), "-S", os.path.join(TMP,"mfc.matl"), "-i", \
+							os.path.join(TMP,"recog.out"), os.path.join(TMP,"dict"), os.path.join(base_dir,"lib\\hmm_names")])
 				
 		elif(aligner == 'Kaldi'):
 			if('linux' in sys.platform.lower()):	
-				subprocess.run(["cp", "train.lab", os.path.join(base_dir,"corpus/train.lab")])
+				subprocess.run(["cp", os.path.join(TMP,"train.lab"), os.path.join(base_dir,"corpus/train.lab")])
 				command = [os.path.join(base_dir,"lib/align")]
 				command.append("-t") 
 				command.append(os.path.join(base_dir,"trash/"))
@@ -187,7 +190,7 @@ class TextConverter():
 					command.append("config.yaml")
 				command.append(os.path.join(base_dir,"corpus/"))
 			elif('darwin' in sys.platform.lower()):
-				subprocess.run(["cp", "train.lab", os.path.join(base_dir,"corpus/train.lab")])
+				subprocess.run(["cp", os.path.join(TMP,"train.lab"), os.path.join(base_dir,"corpus/train.lab")])
 				command = [os.path.join(base_dir,"mac/lib/align")]
 				command.append("-t")
 				command.append(os.path.join(base_dir,"trash/"))
@@ -196,7 +199,7 @@ class TextConverter():
 					command.append("config.yaml")
 				command.append(os.path.join(base_dir,"corpus/"))
 			else:
-				os.system(" ".join(["move", "train.lab", os.path.join(base_dir,"corpus\\train.lab")]))
+				os.system(" ".join(["move", os.path.join(TMP,"train.lab"), os.path.join(base_dir,"corpus\\train.lab")]))
 				#subprocess.run(["move", "train.lab", os.path.join(base_dir,"corpus\\train.lab")])
 				command = [os.path.join(base_dir,"win\\bin\\mfa_align.exe")]
 				command.append("-t")
@@ -206,9 +209,9 @@ class TextConverter():
 					command.append("config.yaml")
 				command.append(os.path.join(base_dir,"corpus\\"))
 
-			command.append("dict")
+			command.append(os.path.join(TMP,"dict"))
 			if(hmmdefs):
-				command.append("model.zip")
+				command.append(os.path.join(TMP,"model.zip"))
 			else:
 				if('win' not in sys.platform.lower()):	
 					command.append(os.path.join(base_dir,"models/pt.zip"))
@@ -233,13 +236,13 @@ class TextConverter():
 				tc.generate_textgrid(filename)
 		elif(aligner == 'Kaldi'):
 			if('win' not in sys.platform.lower()):
-				tc.textgrid_to_lab("output/corpus/train.TextGrid", "train.lab")
+				tc.textgrid_to_lab("output/corpus/train.TextGrid", os.path.join(TMP,"train.lab"))
 			else:
-				tc.textgrid_to_lab("output\\corpus\\train.TextGrid", "train.lab")
+				tc.textgrid_to_lab("output\\corpus\\train.TextGrid", os.path.join(TMP,"train.lab"))
 			if(out_format=='todos'):
-				tc.multi_split("train.lab", filename.replace(".wav",".TextGrid"), 'text1.out', 'text2.out')
+				tc.multi_split(os.path.join(TMP,"train.lab"), filename.replace(".wav",".TextGrid"), os.path.join(TMP,'text1.out'), os.path.join(TMP,'text2.out'))
 			else:
-				tc.lab_to_textgrid("train.lab", filename.replace(".wav", ".TextGrid"))
+				tc.lab_to_textgrid(os.path.join(TMP,"train.lab"), filename.replace(".wav", ".TextGrid"))
 	
 	def lab_to_textgrid(self, ifname, ofname):
 		inf = open(ifname, 'r')
@@ -356,8 +359,10 @@ class TextConverter():
 		prevtime = '0'
 		b_time = '0'
 		a = ''
+
 		for pos, text in enumerate(let):
 			a = a + text
+
 			if(a == 'sil'):
 				outf.write('        intervals [' + str(count+1) + ']:\n')
 				outf.write('            xmin = ' + b_time + '\n')

@@ -17,6 +17,7 @@ class Word:
 	homographs = None
 	verbs = None
 	gramatica = None
+	base_dir='.'
 
 	def __init__(self, word, pos, gramatica=None):
 
@@ -31,6 +32,7 @@ class Word:
 		self.base = ''
 		self.isSandi = False
 		base_dir='.'
+
 		if hasattr(sys, '_MEIPASS'):
 		    base_dir = os.path.join(sys._MEIPASS)
 	
@@ -47,6 +49,17 @@ class Word:
 			Word.phoneme_rules = PhonemeRules()
 		if(Word.gramatica == None and gramatica != None):
 			Word.gramatica = gramatica			
+
+	@staticmethod
+	def update_exceptions():
+		base_dir='.'
+		Word.homographs = ExceptionHashMap(os.path.join(base_dir, "Dictionaries/Homographs.json"))
+		Word.homographs.create_hash()
+		Word.verbs = ExceptionHashMap(os.path.join(base_dir, "Dictionaries/Verbs.json"))
+		Word.verbs.create_hash()
+		Word.exceptions = ExceptionHashMap(os.path.join(base_dir,"Dictionaries/Exceptions.json"))
+		Word.exceptions.create_hash()
+
 
 	def convert_word(self):
 		conversion = ''
@@ -79,7 +92,7 @@ class Word:
 				self.simplified = Word.phoneme_rules.simplify_word(self.word, U_EXC=True)
 			else:
 				self.simplified = Word.phoneme_rules.simplify_word(self.word)
-			self.find_tonic()
+			self.find_tonic(is_simplified=True)
 			for j, e in enumerate(self.simplified):
 				char= Word.phoneme_rules.apply_rule(self, j)
 				if char != None:
@@ -101,7 +114,7 @@ class Word:
 		elif('eo' in vog2):
 			a = vog2.find('eo') + 1
 		elif('oe' in vog2):
-			a = vog2.find('eo')
+			a = vog2.find('oe') + 1
 		elif('o' in vog2):
 			a = vog2.rfind('o')
 		elif('e' in vog2):
@@ -116,10 +129,16 @@ class Word:
 		return a
 
 	#Sets the position of the tonic in the word
-	def find_tonic(self):
+	def find_tonic(self, is_simplified=False):
+		word=''
+		if(is_simplified):
+			word = self.simplified
+		else:
+			word = self.word	
+	
 		acento, til, vogal = -1,-1,-1
 		v = 0 
-		for j, i in enumerate(self.word):
+		for j, i in enumerate(word):
 			if i in self.acentos:
 				acento = j
 			if i in self.til:
@@ -131,13 +150,16 @@ class Word:
 		# Caso tenha alguma letra acentuada, ela é a tônica
 		if (acento != -1):
 			self.tonic = acento
+			return self
 		# Caso tenha alguma letra com til, ela é a tônica
 		elif (til != -1):
 			self.tonic = til
+			return self
 		# Caso tenha apenas uma vogal, ela é a tônica
 		elif (v == 1):
 			self.tonic = vogal
-        
+			return self
+
 		# Caso não haja letra acentuada, nem til aplicamos a regra de acentuacao inversa
 		if self.tonic == -1:
 			# Pega a última sequência de vogais e a penúltima
@@ -146,7 +168,7 @@ class Word:
 			pos1, pos2 = -1, -1
 			time1 = True
 			time2 = False
-			for i, j in reversed(list(enumerate(self.word))):
+			for i, j in reversed(list(enumerate(word))):
 				if (j in self.vogais and time1):
 					vog1 = j + vog1
 					pos1 = i 
@@ -164,11 +186,10 @@ class Word:
 						if (len(vog2) != 0):
 							break
 			vog1 = vog1+p
-			
 			# Se a sequência final corresponder a um dos casos em que uma oxítona seria acentuada, 
 			# então a palavra é paroxitona
 			if (vog1 in self.oxitonas):
-				if(vog2[-1] in ['i','u'] and self.word[pos2+len(vog2)] not in self.vogais and self.word[pos2+len(vog2)+1] not in self.vogais):
+				if(vog2[-1] in ['i','u'] and word[pos2+len(vog2)] not in self.vogais and word[pos2+len(vog2)+1] not in self.vogais):
 					self.tonic = pos2 + len(vog2) - 1
 				else:
 					self.tonic = pos2 + self.priority(vog2)

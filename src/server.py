@@ -234,7 +234,11 @@ def download(name):
 		
 @app.route('/add', methods=['GET', 'POST'])
 def add():
-	a = ExceptionHashMap(os.path.join(base_dir,"/Dictionaries/Exceptions.json"))
+	base_dir = '.'
+	if hasattr(sys, '_MEIPASS'):
+		base_dir = os.path.join(sys._MEIPASS)
+        
+	a = ExceptionHashMap(os.path.join(base_dir,"Dictionaries/Exceptions.json"))
 	a.create_hash()
 	if(request.form["button"]=="add"):
 		try:
@@ -266,4 +270,5 @@ def ex():
 	return render_template('add.html', lista=words)
 
 port = int(os.environ.get("PORT", 5000))
-app.run(host='127.0.0.1', port=port)
+app.run(host='0.0.0.0', port=port)
+#app.run(host='127.0.0.1', port=port)

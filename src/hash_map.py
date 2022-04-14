@@ -54,19 +54,17 @@ class ExceptionHashMap:
     # Creates the dictionary from the file in the address
     
     def create_hash(self):
-        arq = open(self.address, "r")
-        self.dic_s = json.loads(arq.readline())
-        self.dic_c = json.loads(arq.readline())
-        arq.close()   
+        with  open(self.address, "r") as arq:
+            self.dic_s = json.loads(arq.readline())
+            self.dic_c = json.loads(arq.readline())
     
     # Stores the hash map in the file in the address
 
     def store_hash(self):
-        arq = open(self.address, "w")
-        arq.write(json.dumps(self.dic_s))
-        arq.write("\n")
-        arq.write(json.dumps(self.dic_c))
-        arq.close()
+        with open(self.address, "w") as arq:
+            arq.write(json.dumps(self.dic_s))
+            arq.write("\n")
+            arq.write(json.dumps(self.dic_c))
 
     # Returns the right conversion for homographs based on its gramatical class
 

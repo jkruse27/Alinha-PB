@@ -27,6 +27,7 @@ class PhonemeParser(Parser):
 	@_('FRASE VOGAL')
 	def FRASE(self, p):
 		return " ".join(p).replace(',','').strip()
+
 	@_('SIL')
 	def FRASE(self, p):
 		return p
@@ -71,6 +72,14 @@ class PhonemeParser(Parser):
 	def VOGAL(self, p):
 		return p[0]+p[2]
 
+	@_('MAI MAI SPACE CONSOANTE')
+	def VOGAL(self, p):
+		return p[0]+p[1]+p[3]
+
+	@_('MAI MAI SPACE TON')
+	def VOGAL(self, p):
+		return "".join(p)
+
 	@_('MAI TON MAI')
 	def VOGAL(self, p):
 		return "".join(p)
@@ -89,7 +98,7 @@ class PhonemeParser(Parser):
 
 	@_('MAI MAI')
 	def VOGAL(self, p):
-		return p[0]
+		return "".join(p)
 
 	@_('TON')
 	def VOGAL(self, p):

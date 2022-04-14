@@ -41,7 +41,7 @@ class PhonemeRules:
 				pass
 
 			# ----- Determina casos em que a sequencia 'xc' ou 'sc' ou 'sç' são apenas 1 fonema 
-			elif((c == 'c' or c == 'ç') and i < size-1 and i > 0 and word[i-1] == 's' and (word[i+1] in self.a or word[i+1] in self.i or word[i+1] in self.e)):
+			elif((c == 'c' or c == 'ç') and i < size-1 and i > 0 and word[i-1] == 's' and (word[i+1] in self.i or word[i+1] in self.e)):
 				pass
 			elif((c == 'c' or c == 'ç') and i < size-1 and i > 0 and word[i-1] == 'x' and word[i+1] in self.vogais):
 				pass
@@ -51,11 +51,11 @@ class PhonemeRules:
 				new_word += '$'
 
 			# ----- Subsitui 'ch', 'nh' e 'lh' por 1 fonema só ------ #
-			elif(i < (size -1) and c == 'l' and word[i+1] == 'h'):
+			elif(i < (size - 1) and c == 'l' and word[i+1] == 'h'):
 				new_word += '!'
-			elif(i < (size - 2) and c == 'n' and word[i + 1] == 'h'):
+			elif(i < (size - 1) and c == 'n' and word[i + 1] == 'h'):
 				new_word += '@'
-			elif(i < (size - 2) and c == 'c' and word[i + 1] == 'h'):
+			elif(i < (size - 1) and c == 'c' and word[i + 1] == 'h'):
 				new_word += '%'
 		
 			# ----- Substitui 'ss' e 'rr' por 1 fonema só ----- #
@@ -198,10 +198,10 @@ class PhonemeRules:
 		elif (char == "m" or char == "n"):
 			if (char=='m' and char_num != 0 and char_num==size-1 and word[char_num-1]=='a'):
 				ret='U'
-			elif (char_num!=0 and char_num < size-1 and word[char_num-1] in self.vogais and word[char_num+1] not in self.vogais):
-				ret = 'N'
-			elif (char_num == size - 1):
-				ret = 'N'
+			#elif (char_num!=0 and char_num < size-1 and word[char_num-1] in self.vogais and word[char_num+1] not in self.vogais):
+			#	ret = 'N'
+			#elif (char_num == size - 1):
+			#	ret = 'N'
 			else:
 				ret = char
 

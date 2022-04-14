@@ -8,14 +8,14 @@ import string
 
 class Conversor:
 	def convert_sentence(self, sentence):
-	
+		Word.update_exceptions()	
 		sentence = sentence.replace('-', ' ')
 		sentence = sentence.translate(str.maketrans('', '', string.punctuation))
 		converted_sentence = ''
 		#gramatica = GramaticalClass(sentence)
 		
 		lista = [i.lower() for i in re.findall(r"[\w]+", sentence)]
-		words = [Word(palavra, pos) for pos, palavra in enumerate(lista)]
+		words = [Word(palavra.strip(), pos) for pos, palavra in enumerate(lista)]
 		words = list(map(lambda x: x.find_tonic(), words))
 
 		for num, word in enumerate(words):
