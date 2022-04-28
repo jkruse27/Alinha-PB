@@ -163,17 +163,17 @@ class PhonemeRules:
 		# -- Consoantes -- #
 
 		elif (char == 'c'):
-			if (char_num < size - 1 and word[char_num + 1] == 'e' or word[char_num + 1] == 'i' or word[char_num + 1] == 'é' or word[char_num + 1] == 'ê' or word[char_num + 1] == 'í'):
+			if (char_num < size - 1 and (word[char_num + 1] == 'e' or word[char_num + 1] == 'i' or word[char_num + 1] == 'é' or word[char_num + 1] == 'ê' or word[char_num + 1] == 'í')):
 				ret = 's'
 			else:
 				ret = 'k'
 
 		elif (char == 'd'):
-			if (word[char_num + 1] == 'i' or word[char_num + 1] == 'í'):
+			if (char_num < size - 1 and (word[char_num + 1] == 'i' or word[char_num + 1] == 'í')):
 				ret = 'dZ'
-			elif (word[char_num + 1] == 'n'):
+			elif (char_num < size - 1 and word[char_num + 1] == 'n'):
 				ret = 'dZ'
-			elif (word[char_num + 1] == 'e'):
+			elif (char_num < size - 1 and word[char_num + 1] == 'e'):
 				if (word.find('de') == size - 2):
 					ret = 'dZ'
 				else:
@@ -303,7 +303,7 @@ class PhonemeRules:
 		elif (char == 'z'):
 			if (char_num == size-1):
 				ret = 'S'
-			elif (word[char_num+1] not in self.vogais):
+			elif (char_num < size - 1 and word[char_num+1] not in self.vogais):
 				ret = 's'
 			else:
 				ret='z'
